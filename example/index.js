@@ -6,6 +6,7 @@ import {
   createColorScale,
   createColorScales,
   flattenColorScales,
+  getLightness,
 } from '../src/index'
 
 const colors = createColorScales({
@@ -16,10 +17,13 @@ const colors = createColorScales({
   grey: '#9fa3a7',
 })
 
+const flatColorScale = flattenColorScales(colors)
+
 class App extends Component {
   render() {
     return (
       <div>
+        <h2>Color tones</h2>
         {Object.keys(colors).map(key => {
           const color = colors[key]
           return (
@@ -44,6 +48,23 @@ class App extends Component {
             </div>
           )
         })}
+
+        <h2>Flat list of colors</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {Object.keys(flatColorScale).map(key => (
+            <span
+              key={key}
+              style={{
+                padding: '8px 12px',
+                backgroundColor: flatColorScale[key],
+                color: getLightness(flatColorScale[key]) > 0.5
+                  ? 'rgba(0, 0, 0, 0.5)'
+                  : 'rgba(255, 255, 255, 0.5)',
+              }}
+              children={flatColorScale[key]}
+            />
+          ))}
+        </div>
       </div>
     )
   }
