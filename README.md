@@ -4,7 +4,9 @@
 [![Dependency Status](https://david-dm.org/souporserious/tonality.svg)](https://david-dm.org/souporserious/tonality)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-Helper functions to create natural looking color palettes.
+Some small functions to help build and adjust color tone palettes.
+
+![tonality](images/palette.png)
 
 ## Install
 
@@ -15,6 +17,27 @@ Helper functions to create natural looking color palettes.
 ```html
 <script src="https://unpkg.com/purpose/dist/tonality.js"></script>
 (UMD library exposed as `Tonality`)
+```
+
+## Example Usage
+
+```js
+import {
+  createTone,
+  createTones,
+  createColorScale,
+  createColorScales,
+  flattenColorScales,
+  getLightness,
+} from '../src/index'
+
+const colors = createColorScales({
+  info: '#3595bb',
+  danger: '#eb6654',
+  warning: '#ffbe30',
+  success: '#88c163',
+  grey: '#9fa3a7',
+})
 ```
 
 ## Running Locally

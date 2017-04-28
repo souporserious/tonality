@@ -1,7 +1,7 @@
 {
   "name": "tonality",
-  "version": "0.1.0",
-  "description": "Helper functions to create natural looking color palettes.",
+  "version": "0.2.0",
+  "description": "Some small functions to help build and adjust color tone palettes.",
   "main": "lib/index.js",
   "files": [
     "dist",
