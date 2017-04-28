@@ -59,3 +59,8 @@ run dev mode
 `yarn dev`
 
 open your browser and visit: `http://localhost:8080/`
+
+## Thank You
+[This article](https://medium.com/@erikdkennedy/color-in-ui-design-a-practical-framework-e18cacd97f9e) sparked my inspiration for these helpers. Thank you @erikdkennedy!
+
+The code behind this idea was heavily inspired by the [Monochrome](https://monochrome.jxnblk.com/0077d6) app. Thank you @jxnblk!
