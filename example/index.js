@@ -9,23 +9,79 @@ import {
   getLightness,
 } from '../src/index'
 
-const colors = createColorScales({
+const colors = {
+  primary: '#6a9639',
+  accent: '#3f51b5',
   info: '#3595bb',
   danger: '#eb6654',
   warning: '#ffbe30',
   success: '#88c163',
   grey: '#9fa3a7',
-})
+}
 
-const flatColorScale = flattenColorScales(colors)
+const colorScales = createColorScales(colors)
+
+const flatColorScale = flattenColorScales(colorScales)
 
 class App extends Component {
+  state = {
+    desaturate: 0.5,
+  }
   render() {
+    const { desaturate } = this.state
+    function getTones(tone) {
+      const tones = []
+      for (let i = 0; i < 10; i++) {
+        tones.push(tone(1 - i * 0.1))
+      }
+      return tones
+    }
     return (
       <div>
-        <h2>Color tones</h2>
+        <h2>Color toner</h2>
+        <label>Desaturate ({desaturate})</label>
+        <input
+          type="range"
+          step={0.1}
+          min={0}
+          max={1}
+          value={desaturate}
+          onChange={e => this.setState({ desaturate: +e.target.value })}
+        />
         {Object.keys(colors).map(key => {
           const color = colors[key]
+          const tone = createTone(color, desaturate)
+          const tones = getTones(tone)
+          return (
+            <div key={key}>
+              {tones.map(_tone =>
+                <div
+                  key={_tone}
+                  style={{
+                    display: 'flex',
+                    padding: 20,
+                    backgroundColor: _tone,
+                  }}
+                >
+                  {tones.map(tone =>
+                    <div
+                      key={tone}
+                      style={{
+                        flex: 1,
+                        height: 50,
+                        backgroundColor: tone,
+                      }}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+
+        <h2>Color tones</h2>
+        {Object.keys(colors).map(key => {
+          const color = colorScales[key]
           return (
             <div
               key={key}
@@ -35,7 +91,7 @@ class App extends Component {
                 backgroundColor: color.base,
               }}
             >
-              {color.tones.map(tone => (
+              {color.tones.map(tone =>
                 <div
                   key={tone}
                   style={{
@@ -44,14 +100,14 @@ class App extends Component {
                     backgroundColor: tone,
                   }}
                 />
-              ))}
+              )}
             </div>
           )
         })}
 
         <h2>Flat list of colors</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {Object.keys(flatColorScale).map(key => (
+          {Object.keys(flatColorScale).map(key =>
             <span
               key={key}
               style={{
@@ -63,7 +119,7 @@ class App extends Component {
               }}
               children={flatColorScale[key]}
             />
-          ))}
+          )}
         </div>
       </div>
     )

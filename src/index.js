@@ -50,15 +50,22 @@ export function adjustSaturation(amount, color) {
 }
 
 // Color pallette functions
-export function createTone(color, saturation = 0.25) {
-  return value =>
-    adjustSaturation(-value * saturation, adjustLightness(value, color))
+export function createTone(color, desaturate = 0.5) {
+  return value => {
+    // we clamp the number so we can generate better shades if 0 or 1 are passed,
+    // otherwise these colors would be pure black or white
+    const lightnessAmount = Math.min(Math.max(value, 0.05), 0.95)
+    return adjustSaturation(
+      -value * desaturate,
+      adjustLightness(lightnessAmount, color)
+    )
+  }
 }
 
 // calculations repurposed from jxnblk
 // https://github.com/jxnblk/monochrome/blob/master/src/palette.js#L22-L34
-export function createTones(color, saturation) {
-  const tone = createTone(color)
+export function createTones(color, desaturate) {
+  const tone = createTone(color, desaturate)
   const lightness = getLightness(color)
   const lowerstep = lightness / 5
   const upperstep = (1 - lightness) / 6
@@ -69,23 +76,23 @@ export function createTones(color, saturation) {
   return [...upper, ...lower]
 }
 
-export function createColorScale(color, saturation) {
+export function createColorScale(color, desaturate) {
   return {
     base: color,
     text: getLightness(color) < 0.5 ? '#fff' : '#000',
-    tone: createTone(color, saturation),
-    tones: createTones(color, saturation),
+    tone: createTone(color, desaturate),
+    tones: createTones(color, desaturate),
   }
 }
 
-export function createColorScales(colors, saturation) {
-  return Object.keys(colors).reduce(
-    (parsedColors, key) => ({
+export function createColorScales(colors, desaturate) {
+  function colorReducer(parsedColors, key) {
+    return {
       ...parsedColors,
-      [key]: createColorScale(colors[key], saturation),
-    }),
-    {}
-  )
+      [key]: createColorScale(colors[key], desaturate),
+    }
+  }
+  return Object.keys(colors).reduce(colorReducer, {})
 }
 
 export function flattenColorScales(colors) {

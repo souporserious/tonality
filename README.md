@@ -31,13 +31,20 @@ import {
   getLightness,
 } from '../src/index'
 
-const colors = createColorScales({
+const colors = {
   info: '#3595bb',
   danger: '#eb6654',
   warning: '#ffbe30',
   success: '#88c163',
   grey: '#9fa3a7',
-})
+}
+const colorScales = createColorScales(colors)
+const flatColorScales = flattenColorScales(colorScales)
+const successTone = createTone(colors.success)
+
+successTone(0) // darkest shade
+successTone(0.5) // medium shade
+successTone(1) // lightest shade
 ```
 
 ## Running Locally
